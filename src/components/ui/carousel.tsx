@@ -34,7 +34,7 @@ type CarouselContextProps = {
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
-function useCarousel() {
+export function useCarousel() {
   const context = React.useContext(CarouselContext)
 
   if (!context) {
@@ -185,16 +185,15 @@ const CarouselContent = React.forwardRef<
 CarouselContent.displayName = "CarouselContent"
 
 interface CarouselItemCustomProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "className"> {
-  className?: string | ((props: { selectedSnap: number }) => string)
+  extends React.HTMLAttributes<HTMLDivElement> {
+  index: number
 }
 
 const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemCustomProps>(
-  ({ className, ...props }, ref) => {
-    const { orientation, selectedSnap } = useCarousel()
+  ({ className, index, children, ...props }, ref) => {
+    const { orientation, selectedSnap, scrollTo } = useCarousel()
 
-    const computedClassName =
-      typeof className === "function" ? className({ selectedSnap }) : className
+    const computedClassName = selectedSnap === index ? "basis-1/3" : "basis-1/5"
 
     return (
       <div
@@ -203,11 +202,15 @@ const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemCustomProps>(
         aria-roledescription="slide"
         className={cn(
           "min-w-0 shrink-0 grow-0",
-          orientation === "horizontal" ? "pl-4" : "pt-4",
+          orientation === "horizontal" ? "ml-4" : "mt-4",
+          className,
           computedClassName
         )}
-        {...props}
-      />
+        {...props}>
+        <div onClick={() => scrollTo(index)} role="button" tabIndex={0}>
+          {children}
+        </div>
+      </div>
     )
   }
 )
@@ -295,33 +298,6 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = "CarouselNext"
 
-interface CarouselScrollToProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  index: number
-  className?: string
-  size?: string
-}
-
-const CarouselScrollTo = React.forwardRef<
-  HTMLButtonElement,
-  CarouselScrollToProps
->(({ className, index, children, ...props }, ref) => {
-  const { orientation, scrollTo } = useCarousel()
-
-  return (
-    <button
-      ref={ref}
-      className={cn("", orientation === "horizontal" ? "" : "", className)}
-      onClick={() => {
-        scrollTo(index)
-      }}
-      {...props}>
-      {children}
-    </button>
-  )
-})
-CarouselScrollTo.displayName = "CarouselScrollTo"
-
 export {
   type CarouselApi,
   Carousel,
@@ -329,6 +305,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-  CarouselScrollTo,
   CarouselOnSnap,
 }

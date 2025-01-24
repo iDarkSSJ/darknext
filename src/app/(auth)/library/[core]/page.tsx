@@ -2,13 +2,12 @@ import Library from "@/components/Library"
 import { games } from "@/lib/types"
 
 type Props = {
-  params: {
-    core: string
-  }
+  params: Promise<{ core: string }> // Keep params as a Promise
 }
 
 async function corePage({ params }: Props) {
-  const { core } = await params
+  const resolvedParams = await params // Await the Promise
+  const { core } = resolvedParams
   const filteredGames = games.filter((game) => game.core === core)
 
   return <Library games={filteredGames} />

@@ -5,22 +5,18 @@ import { Button } from "./ui/button"
 import Link from "next/link"
 import { CONSOLES } from "@/lib/types"
 
-function SideBar() {
+export default function SideBar() {
   const [collapsed, setCollapsed] = useState(false)
 
   const consoleList = CONSOLES.map((con, i) => (
     <li key={i}>
-      <Button
-        variant="ghost"
-        className={`p-0 w-full justify-start text-left text-xs text-gray-300 hover:text-green-500 hover:bg-gray-700 ${
-          collapsed && "hidden"
+      <Link
+        href={`/library/${con.path}`}
+        className={`block w-full text-left text-xs text-gray-300 hover:text-green-500 hover:bg-gray-700 p-3 transition-colors ${
+          collapsed ? "hidden" : ""
         }`}>
-        <Link
-          href={`/library/${con.path}`}
-          className="w-full h-full flex items-center p-3">
-          {con.label}
-        </Link>
-      </Button>
+        {con.label}
+      </Link>
     </li>
   ))
 
@@ -30,12 +26,14 @@ function SideBar() {
         collapsed ? "w-20" : "w-64"
       } bg-gradient-to-l from-[#232323] to-[#343434] border-r-4 flex flex-col transition-all duration-150`}>
       <div className="flex items-center justify-between p-4 border-b-4 bg-[#535353]">
-        {!collapsed && <h2 className={`text-xl`}>Consoles</h2>}
+        {!collapsed && <h2 className="text-xl text-gray-200">Consoles</h2>}
         <Button
           variant="ghost"
+          size="icon"
           onClick={() => setCollapsed(!collapsed)}
-          className="text-gray-300 hover:bg-transparent hover:text-white p-0">
-          <p className="text-xl">{collapsed ? "→" : "←"}</p>
+          className="text-gray-300 hover:text-white hover:bg-transparent focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-0"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+          {collapsed ? "→" : "←"}
         </Button>
       </div>
       <div
@@ -43,11 +41,20 @@ function SideBar() {
           collapsed ? "overflow-hidden" : ""
         }`}>
         <nav>
-          <ul>{consoleList}</ul>
+          <ul className="space-y-2">
+            <li>
+              <Link
+                href="/library"
+                className={`block w-full text-left text-xs text-gray-300 hover:text-green-500 hover:bg-gray-700 p-3 rounded transition-colors ${
+                  collapsed ? "hidden" : ""
+                }`}>
+                All
+              </Link>
+            </li>
+            {consoleList}
+          </ul>
         </nav>
       </div>
     </aside>
   )
 }
-
-export default SideBar

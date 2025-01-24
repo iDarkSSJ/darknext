@@ -3,13 +3,21 @@
 @tailwind utilities;
 
 body {
-  @apply min-h-screen text-white bg-zinc-900;
+  @apply min-h-screen text-white radial-bg;
 }
 
 .crtTextShadowDf,
 .crtTextShadowBlue,
-.crtTextShadowRedm {
+.crtTextShadowRed {
   @apply animate-crtTextShadowDf;
+}
+
+.crtScanline {
+  @apply w-full h-[100px] z-[8] bg-gradient-to-t from-transparent via-scanline-via to-scanline-to opacity-10 absolute bottom-[100%] animate-scanline pointer-events-none;
+}
+
+.crtBackground {
+  @apply pointer-events-none overflow-hidden fixed inset-0 w-full h-full opacity-60 bg-crt-bg bg-crt-scanline;
 }
 
 .text-shadow-none {
@@ -17,6 +25,11 @@ body {
 }
 
 @layer utilities {
+  .radial-bg {
+    @apply min-h-screen text-white;
+    background-image: radial-gradient(ellipse at center, #3c3c3c, #0e0e0e);
+  }
+
   .crtTextShadowRed {
     --color1: rgba(207, 54, 54, 0.5);
     --color2: rgba(228, 143, 143, 0.3);

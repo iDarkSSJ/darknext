@@ -92,9 +92,16 @@ export default {
   			crtTextShadowDf: 'crtTextShadowDf 0.15s infinite'
   		},
   		backgroundImage: {
-  			'pixel-bg': 'url("https://i.redd.it/bs2e2x6gdmb61.png")'
+  			'pixel-bg': 'url("https://i.redd.it/bs2e2x6gdmb61.png")',
+				'crt-bg': `linear-gradient(rgba(18, 16, 16, 0), rgba(0, 0, 0, 0.25)),
+                            linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))`,
   		},
+			backgroundSize: {
+        'crt-scanline': '100% 3px, 2px 100%',
+      },
   		colors: {
+				'scanline-via': 'rgba(255, 255, 255, 0.2)', 
+        'scanline-to': 'rgba(0, 0, 0, 0.1)', 
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -145,6 +152,7 @@ export default {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			}
+				
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

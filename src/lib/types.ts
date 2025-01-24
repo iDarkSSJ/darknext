@@ -14,6 +14,28 @@ export type Game = {
   core: string
 }
 
+export const EXTENSION_TO_CORE = {
+  nes: "fceumm",
+  snes: "snes9x",
+  gb: "mgba",
+  gba: "mgba",
+  gbc: "mgba",
+  sfc: "snes9x",
+  smc: "snes9x",
+  bin: "genesis_plus_gx",
+  smd: "genesis_plus_gx",
+  md: "genesis_plus_gx",
+  gen: "genesis_plus_gx",
+} as const
+
+export const ACCEPTED_ROM_EXTENSIONS = ["nes", "snes", "gb", "gba", "gbc", "sfc", "smc", "bin", "smd", "md", "gen"] as const
+
+export type RomExtension = typeof ACCEPTED_ROM_EXTENSIONS[number]
+export type CoverExtension = typeof ACCEPTED_COVER_EXTENSIONS[number]
+
+export const ACCEPTED_COVER_EXTENSIONS = ["jpg", "png", "jpeg"] as const
+
+
 export const games: Game[] = [
   {
     id: 1,
